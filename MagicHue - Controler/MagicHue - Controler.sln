@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29905.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicHue - Controler", "MagicHue - Controler\MagicHue - Controler.csproj", "{4777EA49-53FB-4E2B-831C-8F33E626F1DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorWheel", "..\..\..\Desktop\ColorPickerLibrary\ColorWheel\ColorWheel.csproj", "{A9F7F23D-AE72-4FC9-9B55-FCF21F0AE333}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4777EA49-53FB-4E2B-831C-8F33E626F1DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4777EA49-53FB-4E2B-831C-8F33E626F1DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4777EA49-53FB-4E2B-831C-8F33E626F1DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4777EA49-53FB-4E2B-831C-8F33E626F1DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9F7F23D-AE72-4FC9-9B55-FCF21F0AE333}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9F7F23D-AE72-4FC9-9B55-FCF21F0AE333}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9F7F23D-AE72-4FC9-9B55-FCF21F0AE333}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9F7F23D-AE72-4FC9-9B55-FCF21F0AE333}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {65AD58F8-9758-4556-B413-5942948C5792}
+	EndGlobalSection
+EndGlobal
