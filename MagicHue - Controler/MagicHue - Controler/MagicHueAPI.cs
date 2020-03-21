@@ -1,10 +1,13 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Windows.Forms;
 
 namespace MagicHue___Controler
 {
@@ -20,6 +23,7 @@ namespace MagicHue___Controler
         private static StreamWriter SW;
         private static string json;
         private static string result;
+        private static string hexData;
 
         private static User User = new User();
 
@@ -78,21 +82,31 @@ namespace MagicHue___Controler
             {
                 result = SR.ReadToEnd();
             };
-          
+
             return JsonConvert.DeserializeObject<Device>(result).data;
 
 
         }
-     
-        public void TurnOn(string MAC, string hexColor)
+
+        public string GetCRC8256_color(hexDataColor Color)
         {
-           
+            int sum =  0x31 + Color.R + Color.G + Color.B + 0xf;
+                sum %= 0x100;
+
+            return sum.ToString("X");
+        }
+
+        public void TurnOn(string MAC, hexDataColor Color)
+        {
+
             Request = createClient("http://wifij01eu.magichue.net/app/sendCommandBatch/ZG001");
             Request.Method = "POST";
 
+            hexData = string.Format("31{0}{1}{2:X}", Color.getColor(), "00000F", GetCRC8256_color(Color));
+
             using (SW = new StreamWriter(Request.GetRequestStream()))
             {
-                json = "{\"dataCommandItems\":[{\"hexData\":\"31" + hexColor + "00000f3f\",\"macAddress\":\"" + MAC + "\"}]}";
+                json = "{\"dataCommandItems\":[{\"hexData\":\"" + hexData + "\",\"macAddress\":\"" + MAC + "\"}]}";
                 SW.Write(json);
                 SW.Flush();
             }
@@ -136,6 +150,31 @@ namespace MagicHue___Controler
         {
             return User.code == 0;
         }
+
+
+    }
+
+    public class hexDataColor
+    {
+
+        public Int32 R { get; set; }
+        public Int32 G { get; set; }
+        public Int32 B { get; set; }
+        public int brightness { get; set; }
+
+        public string getColor()
+        {
+            return string.Format("{0:X2}{1:X2}{2:X2}", R, G, B);
+        }
+
+        public hexDataColor(int r, int g, int b, int bt)
+        {
+            this.R = r*bt/100;
+            this.G = g*bt/100;
+            this.B = b*bt/100;
+
+        }
+
 
     }
 

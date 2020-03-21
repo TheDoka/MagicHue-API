@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 
@@ -12,6 +13,8 @@ namespace MagicHue___Controler
         public MagicHueAPI Instance = new MagicHueAPI();
         static Settings settings_form;
         static Form1 FormOne;
+        static int brightness = 100;
+
 
         public Form1()
         {
@@ -74,9 +77,10 @@ namespace MagicHue___Controler
 
         private void turnOnToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
             try
             {
-                Instance.TurnOn(listView1.SelectedItems[0].SubItems[2].Text, "71230fa3");
+                Instance.TurnOn(listView1.SelectedItems[0].SubItems[2].Text, new hexDataColor(0x00, 0xff, 0x00, brightness));
             }
             catch (Exception)
             {
@@ -116,26 +120,28 @@ namespace MagicHue___Controler
 
         }
 
-        private void SetColor(string title, string MAC, string hexColor)
+        private void SetColor(string MAC, hexDataColor Color)
         {
 
             if (Instance.IsLogged())
             {
-                if (hexColor == null)
+                if (Color == null)
                 {
-                    hexColor = Interaction.InputBox("Color", "", "", -1, -1);
+                    
+
+
                 }
 
                 if (MAC == null)
                 { 
                     if (listView1.Items.Count > 0)
                     { 
-                        Instance.TurnOn(listView1.SelectedItems[0].SubItems[2].Text, hexColor);
+                        Instance.TurnOn(listView1.SelectedItems[0].SubItems[2].Text, Color);
                     } else {
                         MessageBox.Show("Please add at least one device.");
                     }
                 } else {
-                    Instance.TurnOn(MAC, hexColor);
+                    Instance.TurnOn(MAC, Color);
                 }
 
 
@@ -149,7 +155,6 @@ namespace MagicHue___Controler
         private void sendColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-            SetColor("Color", null, null);
 
         }
 
@@ -158,19 +163,20 @@ namespace MagicHue___Controler
             listView1.Items.Remove(listView1.SelectedItems[0]);
         }
 
-        private void greenToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SetColor("Color", null, "00ff00");
-        }
-
         private void redToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetColor("Color", null, "ff0000");
+            SetColor(null, new hexDataColor(0xff, 0x00, 0x00, brightness));
+        }
+
+
+        private void greenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetColor(null, new hexDataColor(0x00, 0xff, 0x00, brightness));
         }
 
         private void blueToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetColor("Color", null, "0000ff"); 
+            SetColor(null, new hexDataColor(0x00, 0x00, 0xff, brightness)); 
         }
 
         private void turnOnToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -180,7 +186,7 @@ namespace MagicHue___Controler
                 DeviceInfo[] z = Instance.GetAssociatedDevices();
                 for (int i = 0; i < z.Length; i++)
                 {
-                    Instance.TurnOn(z[i].macAddress, "0000ff");
+                    Instance.TurnOn(z[i].macAddress, new hexDataColor(0xff, 0xff, 0xff, brightness));
                 }
             }
             else
@@ -213,17 +219,18 @@ namespace MagicHue___Controler
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            SetColor("Color", null, "00ff00");
+            SetColor(null, new hexDataColor(0x00, 0xff, 0x00, brightness));
         }
 
         private void red2_Click(object sender, EventArgs e)
         {
-            SetColor("Color", null, "ff0000");
+            SetColor(null, new hexDataColor(0xff, 0x00, 0x00, brightness));
         }
 
         private void blue2_Click(object sender, EventArgs e)
         {
-            SetColor("Color", null, "0000ff");
+            hexDataColor a = new hexDataColor(0xff, 0x00, 0xff, brightness);
+            SetColor(null, a);
         }
 
         private void listView1_MouseUp(object sender, MouseEventArgs e)
@@ -255,12 +262,51 @@ namespace MagicHue___Controler
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             System.Environment.Exit(0);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+            
+            
+        }
+
+        private void colorWheel1_ColorChanged(object sender, EventArgs e)
+        {
+ 
+            SetColor(null, new hexDataColor((colorWheel1.Color.R*2)%256, (colorWheel1.Color.G*2)%256, (colorWheel1.Color.B*2)%256, brightness));
+
+        }
+
+        private void vScrollBar1_ValueChanged(object sender, EventArgs e)
+        {
+            brightness = vScrollBar1.Value;
+            SetColor(null, new hexDataColor((colorWheel1.Color.R * 2) % 256, (colorWheel1.Color.G * 2) % 256, (colorWheel1.Color.B * 2) % 256, brightness));
+        }
+
+        private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            try
+            {
+                label1.Text = listView1.SelectedItems[0].Text;
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private void toolStripSplitButton1_ButtonClick_1(object sender, EventArgs e)
+        {
+            if (this.Width == 496)
+            {
+                this.Width = 326;
+            } else { this.Width = 496; }
         }
     }
 
